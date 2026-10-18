@@ -120,6 +120,9 @@
 
         .name {
             top: 33cqw;
+            left: 5cqw;
+            width: 55cqw;
+            max-width: 55cqw;
             font-family: 'Dancing Script', cursive;
             font-size: 6.6cqw;
             white-space: nowrap;
@@ -129,7 +132,6 @@
             border-bottom: .8cqw dotted var(--ink);
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 45cqw;
             transition: font-size 0.2s ease;
         }
 
@@ -812,7 +814,7 @@
                     id: 2,
                     displayName: 'Bạn Nhật và Trúc Phương',
                     keys: ['2', 'bannhatvatrucphuong', 'nhatvatrucphuong', 'trucphuongvanhat', 'nhatphuong', 'nhat-phuong', 'nhat_phuong', 'nhat và phuong', 'nhat phuong', 'phuongnhat', 'phuong-nhat', 'ongmainhatvabamoiphuong', 'ongmainhat', 'bamoiphuong', 'banphuongvanhat', 'phuongvanhat'],
-                    fontSize: '4.8cqw',
+                    fontSize: '3.7cqw',
                     message: 'Bốn năm đại học rực rỡ sắp khép lại, ngày tốt nghiệp này chắc chắn không thể thiếu hai “ông mai bà mối” quyền lực rồi! Nhớ đến chung vui với tui nha hai ông bà! ❤️'
                 },
                 {
@@ -943,6 +945,22 @@
                         }
                         // Cập nhật tiêu đề tab trình duyệt
                         document.title = 'Thư mời tốt nghiệp – ' + matchedGuest.displayName;
+
+                        // Tự động thu nhỏ cỡ chữ nếu tên dài hơn khung để không bao giờ bị dấu "..."
+                        function ensureTextFits() {
+                            let attempts = 0;
+                            while (nameEl.scrollWidth > nameEl.clientWidth && attempts < 30) {
+                                const current = parseFloat(window.getComputedStyle(nameEl).fontSize);
+                                if (current <= 12) break;
+                                nameEl.style.fontSize = (current - 0.5) + 'px';
+                                attempts++;
+                            }
+                        }
+                        ensureTextFits();
+                        setTimeout(ensureTextFits, 100);
+                        if (document.fonts && document.fonts.ready) {
+                            document.fonts.ready.then(ensureTextFits);
+                        }
                     }
                 }
             }
